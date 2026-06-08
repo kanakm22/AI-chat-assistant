@@ -98,6 +98,8 @@ router.post("/chat", async (req, res) => {
       thread.messages.push({ role: "user", content: message })
     }
 
+    await thread.save();
+
     const assistantReply = await getGeminiAPIResponse(message);
     thread.messages.push({ role: "assistant", content: assistantReply })
     thread.updatedAt = new Date();
