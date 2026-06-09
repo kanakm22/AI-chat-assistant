@@ -10,19 +10,22 @@ function Chat() {
   const [latestReply, setLatestReply] = useState("");
 
   useEffect(() => {
-    if (!reply) return;
+  if (!reply) {
+    setLatestReply("");
+    return;
+  }
 
-    const content = reply.split(" ");
-    let idx = 0;
+  const content = reply.split(" ");
+  let idx = 0;
 
-    const interval = setInterval(() => {
-      setLatestReply(content.slice(0, idx + 1).join(" "));
-      idx++;
-      if (idx >= content.length) clearInterval(interval);
-    }, 40);
+  const interval = setInterval(() => {
+    setLatestReply(content.slice(0, idx + 1).join(" "));
+    idx++;
+    if (idx >= content.length) clearInterval(interval);
+  }, 40);
 
-    return () => clearInterval(interval);
-  }, [reply]);
+  return () => clearInterval(interval);
+}, [reply]);
 
   return (
     <>
