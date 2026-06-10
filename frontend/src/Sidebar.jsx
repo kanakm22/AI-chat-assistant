@@ -84,6 +84,7 @@ function Sidebar() {
           <li 
           key={idx}
           onClick={(e)=> changeThread(thread.threadId) }
+          className={thread.threadId === currThreadId ? "highlighted" : " "}
           >{thread.title}
           <i className="fa-solid fa-trash"
           onClick={(e)=>{
