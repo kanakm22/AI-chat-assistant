@@ -10,8 +10,8 @@ function Chat() {
   const [latestReply, setLatestReply] = useState("");
 
   useEffect(() => {
-  if (!reply) {
-    setLatestReply("");
+  if (reply === null) {
+    setLatestReply(null); // loading prev reply 
     return;
   }
 
@@ -47,6 +47,12 @@ function Chat() {
         {prevChats && prevChats.length > 0 && prevChats[prevChats.length - 1].role === "user" && (
           <div className="userDiv">
             <p className="userMsg">{prevChats[prevChats.length - 1].content}</p>
+          </div>
+        )}
+
+        {prevChats && prevChats.length > 0 && prevChats[prevChats.length - 1].role === "assistant" && (
+          <div className="assistantDiv">
+            <p className="assistantMsg">{prevChats[prevChats.length - 1].content}</p>
           </div>
         )}
 
