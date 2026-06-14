@@ -3,6 +3,7 @@ import {useContext} from "react";
 import {MyContext} from "./MyContext.jsx";
 import { useEffect } from "react";
 import {v4 as uuidv4} from "uuid";
+import logo from "./assets/logo.png";
 
 function Sidebar() {
   const {allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats} = useContext(MyContext);
@@ -10,7 +11,7 @@ function Sidebar() {
   const getAllThreads = async ()=>{
 
     try{
-      const response = await fetch("http://localhost:8080/api/thread");
+      const response = await fetch("/api/thread");
       const res = await response.json();
       const filteredData = res.map(thread => ({threadId : thread.threadId, title: thread.title}))
       // console.log(filteredData);
@@ -36,7 +37,7 @@ function Sidebar() {
     setCurrThreadId(newThreadId);
 
     try{
-      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
+      const response = await fetch(`/api/thread/${newThreadId}`);
       const res = await response.json();
       console.log(res);
       setPrevChats(res);
@@ -50,8 +51,7 @@ function Sidebar() {
 
   const deleteThread = async(threadId) =>{
     try{
-     const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, {method: "DELETE"});
-     const res = response.json();
+     const response = await fetch(`/api/thread/${threadId}`, {method: "DELETE"});
      console.log(res);
 
      //re render updated threads
@@ -71,7 +71,7 @@ function Sidebar() {
     <section className="sidebar">
     {/* new chat button */}
     <button onClick={createNewChat}>
-      <img src="src/assets/logo.png" alt="Forge" className="logo" />
+      <img src={logo} alt="Forge" className="logo" />
       <span><i className="fa-solid fa-pen-to-square "></i></span>
     </button>
 
