@@ -10,29 +10,33 @@ function Chat() {
   const [latestReply, setLatestReply] = useState("");
 
   useEffect(() => {
-  if (reply === null) {
-    setLatestReply(null); // loading prev reply 
-    return;
-  }
+    if (reply === null) {
+      setLatestReply(null); 
+      return;
+    }
 
-  const content = reply.split(" ");
-  let idx = 0;
+    const content = reply.split(" ");
+    let idx = 0;
 
-  const interval = setInterval(() => {
-    setLatestReply(content.slice(0, idx + 1).join(" "));
-    idx++;
-    if (idx >= content.length) clearInterval(interval);
-  }, 40);
+    const interval = setInterval(() => {
+      setLatestReply(content.slice(0, idx + 1).join(" "));
+      idx++;
+      if (idx >= content.length) clearInterval(interval);
+    }, 40);
 
-  return () => clearInterval(interval);
-}, [reply]);
+    return () => clearInterval(interval);
+  }, [reply]);
 
   return (
     <>
       <div className="chats">
         {newChat && <h1>Start a new Chat!</h1>}
 
-        {prevChats?.slice(0, -1).map((chat, idx) => (
+        
+        {(reply && prevChats && prevChats.length > 0 && prevChats[prevChats.length - 1].role === "assistant"
+          ? prevChats.slice(0, -1)
+          : prevChats
+        )?.map((chat, idx) => (
           <div className={chat.role === "user" ? "userDiv" : "assistantDiv"} key={idx}>
             {chat.role === "user" ? (
               <p className="userMsg">{chat.content}</p>
@@ -44,18 +48,14 @@ function Chat() {
           </div>
         ))}
 
+        
         {prevChats && prevChats.length > 0 && prevChats[prevChats.length - 1].role === "user" && (
           <div className="userDiv">
             <p className="userMsg">{prevChats[prevChats.length - 1].content}</p>
           </div>
         )}
 
-        {prevChats && prevChats.length > 0 && prevChats[prevChats.length - 1].role === "assistant" && (
-          <div className="assistantDiv">
-            <p className="assistantMsg">{prevChats[prevChats.length - 1].content}</p>
-          </div>
-        )}
-
+        
         {latestReply && (
           <div className="assistantDiv">
             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
