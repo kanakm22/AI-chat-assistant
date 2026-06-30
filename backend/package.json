@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "scripts": {
-    "jest": "jest"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

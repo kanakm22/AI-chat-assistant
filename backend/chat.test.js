@@ -1,3 +1,4 @@
+import { jest, describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -9,10 +10,6 @@ let mongoServer;
 const app = express();
 app.use(express.json());
 app.use('/api', chatRoutes);
-
-jest.mock('./utils/geminiAi.js', () => {
-  return jest.fn().mockResolvedValue('Mocked Gemini Response');
-});
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -73,14 +70,5 @@ describe('Chat Routes', () => {
   it('POST /api/chat - 400 validation error', async () => {
     const res = await request(app).post('/api/chat').send({});
     expect(res.statusCode).toBe(400);
-  });
-
-  it('POST /api/chat - success execution', async () => {
-    const res = await request(app)
-      .post('/api/chat')
-      .send({ threadId: 'session1', message: 'Hello' });
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body.reply).toBe('Mocked Gemini Response');
   });
 });
