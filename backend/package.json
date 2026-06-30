@@ -1,8 +1,11 @@
 {
+  "scripts": {
+    "jest": "jest"
+  },
   "dependencies": {
     "@google/genai": "^2.8.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.2",
     "express": "^5.2.1",
     "mongoose": "^9.6.3",
     "nodemon": "^3.1.14",
