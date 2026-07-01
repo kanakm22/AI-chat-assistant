@@ -17,25 +17,27 @@ const getGeminiAPIResponse = async (message) => {
   };
 
   try {
+    const startTime = performance.now();
+
     const response = await fetch(url, options);
     const data = await response.json();
 
-    // DIAGNOSTIC LOG: This will show you the exact structure in your VS Code Terminal
+    const endTime = performance.now();
+    const latencyInSeconds = ((endTime - startTime) / 1000).toFixed(2);
+
     console.log("--- GOOGLE API RESPONSE STRUCTURE ---");
     console.dir(data, { depth: null });
+    console.log(`>>> Response Latency: ${latencyInSeconds} seconds <<<`);
     console.log("-------------------------------------");
 
-    // Strategy 1: Standard layout
     if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
       return data.candidates[0].content.parts[0].text;
     }
 
-    // Strategy 2: Alternative layout fallback
     if (data.candidates?.[0]?.output?.text) {
       return data.candidates[0].output.text;
     }
 
-    // Strategy 3: Check if Google returned an error payload directly inside the 200 block
     if (data.error) {
       return `API Error: ${data.error.message || "Unknown API issue"}`;
     }
